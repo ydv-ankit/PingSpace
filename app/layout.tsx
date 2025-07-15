@@ -11,8 +11,8 @@ const font = Open_Sans({
 });
 
 export const metadata: Metadata = {
-	title: "Discord",
-	description: "Chat app build with nextjs",
+	title: "PingSpace",
+	description: "PingSpace is a chat app build with nextjs",
 };
 
 export default function RootLayout({
