@@ -3,9 +3,7 @@
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 
 import {
 	Dialog,
@@ -26,6 +24,8 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FileUpload } from "@/components/file-upload";
+import { useRouter } from "next/navigation";
+import { useModel } from "@/hooks/use-model-store";
 
 const formSchema = z.object({
 	name: z.string().min(1, {
@@ -36,13 +36,11 @@ const formSchema = z.object({
 	}),
 });
 
-export function InitialModal() {
-	const [isMounted, setIsMounted] = useState(false);
+export function CreateServerModal() {
+	const { isOpen, onClose, type } = useModel();
 	const router = useRouter();
 
-	useEffect(() => {
-		setIsMounted(true);
-	}, []);
+	const isModalOpen = isOpen && type === "createServer";
 
 	const form = useForm({
 		defaultValues: {
@@ -59,18 +57,19 @@ export function InitialModal() {
 			await axios.post("/api/servers", values);
 			form.reset();
 			router.refresh();
-			window.location.reload();
+			onClose();
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-	if (!isMounted) {
-		return null;
-	}
+	const handleClose = () => {
+		form.reset();
+		onClose();
+	};
 
 	return (
-		<Dialog open>
+		<Dialog open={isModalOpen} onOpenChange={handleClose}>
 			<DialogContent className="bg-white text-black p-0 overflow-hidden">
 				<DialogHeader className="pt-8 px-6">
 					<DialogTitle className="text-2xl text-center font-bold">

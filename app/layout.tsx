@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
+import { ModalProvider } from "@/components/providers/modal-provider";
 
 const font = Open_Sans({
 	variable: "--font-geist-sans",
@@ -29,7 +30,9 @@ export default function RootLayout({
 						defaultTheme="system"
 						enableSystem={true}
 						storageKey="discord-theme"
-						disableTransitionOnChange>
+						disableTransitionOnChange
+					>
+						<ModalProvider />
 						{children}
 					</ThemeProvider>
 				</body>
