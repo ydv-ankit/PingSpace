@@ -7,36 +7,36 @@ import { cn } from "@/lib/utils";
 import { ModalProvider } from "@/components/providers/modal-provider";
 
 const font = Open_Sans({
-	variable: "--font-geist-sans",
-	subsets: ["latin"],
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-	title: "PingSpace",
-	description: "PingSpace is a chat app build with nextjs",
+  title: "PingSpace",
+  description: "PingSpace is a chat app build with nextjs",
 };
 
 export default function RootLayout({
-	children,
+  children,
 }: Readonly<{
-	children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-	return (
-		<ClerkProvider afterSignOutUrl={"/"}>
-			<html lang="en" suppressHydrationWarning>
-				<body className={cn(font.className, "bg-white dark:bg-[#313338]")}>
-					<ThemeProvider
-						attribute="class"
-						defaultTheme="system"
-						enableSystem={true}
-						storageKey="discord-theme"
-						disableTransitionOnChange
-					>
-						<ModalProvider />
-						{children}
-					</ThemeProvider>
-				</body>
-			</html>
-		</ClerkProvider>
-	);
+  return (
+    <ClerkProvider afterSignOutUrl={"/"}>
+      <html lang="en" suppressHydrationWarning>
+        <body className={cn(font.className, "bg-white dark:bg-[#313338]")}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem={true}
+            storageKey="discord-theme"
+            disableTransitionOnChange
+          >
+            <ModalProvider />
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
+  );
 }

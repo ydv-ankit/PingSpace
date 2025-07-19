@@ -4,40 +4,40 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
 export default async function ServerIdLayout({
-	children,
-	params
+  children,
+  params,
 }: {
-	children: React.ReactNode;
-	params: Promise<{ serverId: string }>;
+  children: React.ReactNode;
+  params: Promise<{ serverId: string }>;
 }) {
-	const profile = await currentProfile();
-	const { serverId } = await params;
+  const profile = await currentProfile();
+  const { serverId } = await params;
 
-	if (!profile) {
-		return redirect("/sign-in");
-	}
+  if (!profile) {
+    return redirect("/sign-in");
+  }
 
-	const server = await db.server.findUnique({
-		where: {
-			id: serverId,
-			members: {
-				some: {
-					profileId: profile.id,
-				},
-			},
-		},
-	});
+  const server = await db.server.findUnique({
+    where: {
+      id: serverId,
+      members: {
+        some: {
+          profileId: profile.id,
+        },
+      },
+    },
+  });
 
-	if (!server) {
-		return redirect("/");
-	}
+  if (!server) {
+    return redirect("/");
+  }
 
-	return (
-		<div className="h-full">
-			<div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
-				<ServerSidebar serverId={serverId} />
-			</div>
-			<main className="h-full md:pl-60">{children}</main>
-		</div>
-	);
+  return (
+    <div className="h-full">
+      <div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
+        <ServerSidebar serverId={serverId} />
+      </div>
+      <main className="h-full md:pl-60">{children}</main>
+    </div>
+  );
 }

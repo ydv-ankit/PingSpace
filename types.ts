@@ -1,5 +1,5 @@
-import { Member, Profile, Server } from "./prisma/lib/generated/prisma"
+import { Member, Profile, Server } from "./prisma/lib/generated/prisma";
 
 export type ServerWithMemberWithProfiles = Server & {
-    members: (Member & {profile: Profile})[]
-}
+  members: (Member & { profile: Profile })[];
+};
