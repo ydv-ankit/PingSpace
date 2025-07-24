@@ -17,7 +17,6 @@ import {
   ShieldAlert,
   ShieldCheck,
   ShieldQuestion,
-  UserPlus,
 } from "lucide-react";
 import { useState } from "react";
 import { ServerWithMemberWithProfiles } from "@/types";
@@ -28,7 +27,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuSub,
@@ -55,6 +53,25 @@ export function MembersModal() {
   const { server } = data as { server: ServerWithMemberWithProfiles };
   const router = useRouter();
 
+  const onKick = async (memberId: string) => {
+    try {
+      setLoadingId(memberId);
+      const url = qs.stringifyUrl({
+        url: `/api/members/${memberId}`,
+        query: {
+          serverId: server?.id,
+        },
+      });
+      const response = await axios.delete(url);
+      router.refresh();
+      onOpen("members", { server: response.data });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingId("");
+    }
+  };
+
   const onRoleChange = async (memberId: string, role: MemberRole) => {
     try {
       setLoadingId(memberId);
@@ -62,11 +79,11 @@ export function MembersModal() {
         url: `/api/members/${memberId}`,
         query: {
           serverId: server?.id,
-          memberId: memberId,
         },
       });
-      await axios.patch(url, { role });
+      const response = await axios.patch(url, { role });
       router.refresh();
+      onOpen("members", { server: response.data });
     } catch (error) {
       console.log(error);
     } finally {
@@ -137,7 +154,7 @@ export function MembersModal() {
                           </DropdownMenuPortal>
                         </DropdownMenuSub>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onKick(member.id)}>
                           <Gavel className="h-4 w-4 mr-2" />
                           Kick
                         </DropdownMenuItem>

@@ -4,10 +4,10 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { serverId: string } },
+  { params }: { params: Promise<{ serverId: string }> },
 ) {
   try {
-    const serverId = params.serverId;
+    const { serverId } = await params;
     const { name, imageUrl } = await req.json();
 
     if (!serverId) {
